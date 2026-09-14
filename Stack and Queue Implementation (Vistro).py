@@ -3,7 +3,6 @@ CAPACITY = 10
 
 class Stack:
     def __init__(self):
-        # Fixed-size list
         self.items = [None] * CAPACITY
         self.top = -1
 
@@ -13,18 +12,18 @@ class Stack:
     def isFull(self):
         return self.top == CAPACITY - 1
 
-    def push(self, value):
+    def push_stack(self, value):
         if self.isFull():
-            print("\n[Stack] Overflow! The stack is full.")
+            print("\n[Stack] The stack is full.")
             return
 
         self.top += 1
         self.items[self.top] = value
         print(f"\n[Stack] Pushed {value} onto the stack.")
 
-    def pop(self):
+    def pop_stack(self):
         if self.isEmpty():
-            print("\n[Stack] Underflow! The stack is empty.")
+            print("\n[Stack] The stack is empty.")
             return
 
         value = self.items[self.top]
@@ -35,7 +34,7 @@ class Stack:
 
     def peek(self):
         if self.isEmpty():
-            print("\n[Stack] Underflow! The stack is empty.")
+            print("\n[Stack] The stack is empty.")
             return
 
         print(f"\n[Stack] Top element: {self.items[self.top]}")
@@ -52,62 +51,115 @@ class Stack:
 
     def checkEmpty(self):
         if self.isEmpty():
-            print("\n[Stack] isEmpty: True")
+            print("\n[Stack] is Empty: True")
         else:
-            print("\n[Stack] isEmpty: False")
+            print("\n[Stack] is Empty: False")
 
     def checkFull(self):
         if self.isFull():
-            print("\n[Stack] isFull: True")
+            print("\n[Stack] is Full: True")
         else:
-            print("\n[Stack] isFull: False")
+            print("\n[Stack] is Full: False")
 
 
+class Queue:
+    def __init__(self):
+        self.data = [None] * CAPACITY
+        self.front = 0
+        self.rear = -1
+        self.count = 0
+
+    def isEmpty(self):
+        return self.count == 0
+
+    def isFull(self):
+        return self.count == CAPACITY
+
+    def enqueue_manual(self, value):
+        if self.isFull():
+            print("\n[Queue] The queue is full.")
+            return
+
+        self.rear = (self.rear + 1) % CAPACITY
+        self.data[self.rear] = value
+        self.count += 1
+
+        print(f"\n[Queue] Enqueued {value} into the queue.")
+
+    def dequeue_manual(self):
+        if self.isEmpty():
+            print("\n[Queue] The queue is empty.")
+            return
+
+        value = self.data[self.front]
+        self.data[self.front] = None
+
+        self.front = (self.front + 1) % CAPACITY
+        self.count -= 1
+
+        print(f"\n[Queue] Dequeued {value} from the queue.")
+
+    def peek(self):
+        if self.isEmpty():
+            print("\n[Queue] The queue is empty.")
+            return
+
+        print(f"\n[Queue] Front element: {self.data[self.front]}")
+
+    def display(self):
+        if self.isEmpty():
+            print("\n[Queue] The queue is empty.")
+            return
+
+        print("\n[Queue] Contents (Front to Rear):")
+
+        index = self.front
+        for _ in range(self.count):
+            print(self.data[index])
+            index = (index + 1) % CAPACITY
+
+    def checkEmpty(self):
+        if self.isEmpty():
+            print("\n[Queue] is Empty: True")
+        else:
+            print("\n[Queue] is Empty: False")
+
+    def checkFull(self):
+        if self.isFull():
+            print("\n[Queue] is Full: True")
+        else:
+            print("\n[Queue] is Full: False")
 
 
+def get_choice():
+    try:
+        return int(input("Enter choice: "))
+    except ValueError:
+        return -1
 
 
-
-operations = []
-x = []
-
-
-  def main():
-
-    stack = Stack()
-    queue = Queue()
-
+def stack_menu(stack):
     while True:
-        print("\n")
-        print("=== Main Menu ===")
-        print("1. Stack Operations (LIFO)")
-        print("2. Queue Operations (FIFO)")
-        print("0. Exit")
-  
-  def stack_menu(stack):
-
-    while True:
-        print("\n")
-        print("--------- STACK MENU ---------")
+        print("\n====== STACK MENU ======")
+        print("0. Back to Main Menu")
         print("1. Push")
         print("2. Pop")
-        print("3. Peek (Top)")
+        print("3. Peek ")
         print("4. Display Stack")
         print("5. Check if Empty")
         print("6. Check if Full")
-        print("0. Back to Main Menu")
 
         choice = get_choice()
 
         if choice == 1:
             try:
                 value = int(input("Enter value to push: "))
-                stack.push(value)
+                stack.push_stack(value)
             except ValueError:
-                print("\nInvalid input! Please enter a number.")
+                print("\nInvalid input, Please try again.")
 
         elif choice == 2:
-            stack.pop()
+            stack.pop_stack()
 
         elif choice == 3:
             stack.peek()
@@ -125,23 +177,73 @@ x = []
             break
 
         else:
-            print("\nInvalid choice! Please select from the menu.")
+            print("\nInvalid choice, Please try again.")
 
-  def stack_menu(stack):
-    
+
+def queue_menu(queue):
     while True:
-        print("\n")
-        print("---Queue Menu---")
-        print("0. Back to menu")
+        print("\n====== QUEUE MENU ======")
+        print("0. Back to Main Menu")
         print("1. Enqueue")
-        print("2. Disqueue")
-        print("3. Peek")
+        print("2. Dequeue")
+        print("3. Peek ")
         print("4. Display Queue")
-        print("5. Check if empty")
-        print("6. Check if full")
-        choice = input ("Choice (0-6):")
+        print("5. Check if Empty")
+        print("6. Check if Full")
+
+        choice = get_choice()
+
+        if choice == 1:
+            value = input("Enter value to enqueue: ")
+            queue.enqueue(value)
+
+        elif choice == 2:
+            queue.dequeue()
+
+        elif choice == 3:
+            queue.peek()
+
+        elif choice == 4:
+            queue.display()
+
+        elif choice == 5:
+            queue.checkEmpty()
+
+        elif choice == 6:
+            queue.checkFull()
+
+        elif choice == 0:
+            break
+
+        else:
+            print("\nInvalid choice, Please try again.")
 
 
-        if choice == "3":
-          print("Exit Menu")
-          break
+def main():
+    stack = Stack()
+    queue = Queue()
+
+    while True:
+        print("\n============ MAIN MENU ============")
+        print("1. Stack Operations (LIFO)")
+        print("2. Queue Operations (FIFO)")
+        print("0. Exit")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            stack_menu(stack)
+
+        elif choice == "2":
+            queue_menu(queue)
+
+        elif choice == "0":
+            print("\nExited the menu")
+            break
+
+        else:
+            print("Invalid choice, Please try again.")
+
+
+if __name__ == "__main__":
+    main()
